@@ -3,11 +3,15 @@ import { exibirMenu } from "./exibirMenu.mjs";
 import { lerOpcao } from "./lerOpcao.mjs";
 
 function listarVertices() {
-  vecVertices.forEach((vertice, index) => {
-    console.log(`Vertice ${index}: (${vertice.getX()}, ${vertice.getY()})`);
-  });
-  exibirMenu();
-  lerOpcao();
+  try {
+    vecVertices.forEach((vertice, index) => {
+      console.log(`Vertice ${index}: (${vertice.getX()}, ${vertice.getY()})`);
+    });
+    exibirMenu();
+    lerOpcao();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export { listarVertices };
