@@ -4,18 +4,24 @@ import { exibirMenu } from "./exibirMenu.mjs";
 import { lerOpcao } from "./lerOpcao.mjs";
 
 function calcularDistancia() {
-  rl.question(
-    "Digite o numero dos vértice (formato: vértice1 vértice2): ",
-    (input) => {
-      const [vertice1, vertice2] = input.split(" ").map(Number);
+  try {
+    rl.question(
+      "Digite o numero dos vértice (formato: vértice1 vértice2): ",
+      (input) => {
+        const [vertice1, vertice2] = input.split(" ").map(Number);
 
-      const distancia = vecVertices[vertice1].distancia(vecVertices[vertice2]);
-      console.log(`Distância entre os vértices: ${distancia}`);
+        const distancia = vecVertices[vertice1].distancia(
+          vecVertices[vertice2]
+        );
+        console.log(`Distância entre os vértices: ${distancia}`);
 
-      exibirMenu();
-      lerOpcao();
-    }
-  );
+        exibirMenu();
+        lerOpcao();
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export { calcularDistancia };

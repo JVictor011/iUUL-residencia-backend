@@ -4,17 +4,21 @@ import { exibirMenu } from "./exibirMenu.mjs";
 import { lerOpcao } from "./lerOpcao.mjs";
 
 function mudarVertice() {
-  rl.question(
-    "Digite o numero do vértice as suas novas coordenadas (formato: vértice y z):  ",
-    (input) => {
-      const [vertice, x, y] = input.split(" ").map(Number);
+  try {
+    rl.question(
+      "Digite o numero do vértice e as suas novas coordenadas (formato: vértice y z):  ",
+      (input) => {
+        const [vertice, x, y] = input.split(" ").map(Number);
 
-      vecVertices[vertice].mover(x, y);
+        vecVertices[vertice].mover(x, y);
 
-      exibirMenu();
-      lerOpcao();
-    }
-  );
+        exibirMenu();
+        lerOpcao();
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export { mudarVertice };
