@@ -4,6 +4,7 @@ import { verticesIguais } from "./verticesIguais.mjs";
 import { listarVertices } from "./listarVertices.mjs";
 import { mudarVertice } from "./mudarVertice.mjs";
 import { rl, vecVertices } from "../utils/readlineModule.mjs";
+import { exibirMenu } from "./exibirMenu.mjs";
 
 function lerOpcao() {
   rl.question("Opção: ", (opcao) => {
