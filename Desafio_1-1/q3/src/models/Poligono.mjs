@@ -1,13 +1,19 @@
-import { Vertice } from "../q1/src/models/Vertice.mjs";
+import { Vertice } from "../../../q1/src/models/Vertice.mjs";
 
 class Poligono {
   #vertices = [];
 
   constructor(...vecVertices) {
-    if (vecVertices.length < 3) {
-      return "Numero de vertices insufucientes!";
+    if (vecVertices.length < 6 || vecVertices.length % 2 !== 0) {
+      throw new Error("Número de vértices insuficientes ou formato incorreto!");
     }
-    this.#vertices = vecVertices.map((v) => new Vertice(v.x, v.y));
+    this.#vertices = [];
+
+    for (let i = 0; i < vecVertices.length; i += 2) {
+      const x = vecVertices[i];
+      const y = vecVertices[i + 1];
+      this.#vertices.push(new Vertice(x, y));
+    }
   }
 
   addVertice(x, y) {
