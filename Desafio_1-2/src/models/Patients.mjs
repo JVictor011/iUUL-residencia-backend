@@ -32,6 +32,7 @@ class Patients {
         return false;
       }
     }
+    return true;
   }
   validateCpfDddFirstPart(cpf) {
     try {
@@ -75,11 +76,11 @@ class Patients {
   }
   validateCPF(cpf) {
     try {
-      if (!validateCpfLanght(cpf)) {
+      if (!this.validateCpfLanght(cpf)) {
         return false;
       }
-      let DddFirstPart = validateCpfDddFirstPart(cpf);
-      let DddSecondPart = validateCpfDddSecondPart(cpf);
+      let DddFirstPart = this.validateCpfDddFirstPart(cpf);
+      let DddSecondPart = this.validateCpfDddSecondPart(cpf);
 
       cpf[10] = DddFirstPart;
       cpf[11] = DddSecondPart;
