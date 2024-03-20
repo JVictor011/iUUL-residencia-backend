@@ -4,12 +4,31 @@ class Patients {
   #cpf;
   #name;
   #dateOfBirth;
-  constructor(cpf, name, dateOfBirth) {
-    this.registerPatient(cpf, name, dateOfBirth);
+
+  constructor() {}
+
+  getCpf() {
+    return this.#cpf;
+  }
+  getName() {
+    return this.#name;
+  }
+  getDateOfBirth() {
+    return this.#dateOfBirth;
+  }
+
+  set setCpf(cpf) {
+    this.#cpf = cpf;
+  }
+  set setName(name) {
+    this.#name = name;
+  }
+  set setDateOfBirth(dateOfBirth) {
+    this.#dateOfBirth = dateOfBirth;
   }
 
   validateName(name) {
-    if (name.langht < 5) {
+    if (name.length < 5) {
       console.log("O nome tem que ter mais do que 5 caracteres");
       return false;
     }
@@ -36,40 +55,26 @@ class Patients {
   }
   validateCpfDddFirstPart(cpf) {
     try {
-      let value = 10;
-      let aux = 0;
+      let sumValidate = 0;
       for (let i = 0; i < 9; i++) {
-        aux += cpf[i] * value;
-        value--;
+        sumValidate += parseInt(cpf[i]) * (10 - i);
       }
-      let restOfDivision = aux % 11;
-      let valueDdd = 0;
-      if (restOfDivision == 0 || restOfDivision == 1) {
-        return valueDdd;
-      } else if (restOfDivision >= 2 && restOfDivision <= 10) {
-        valueDdd = 11 - restOfDivision;
-        return valueDdd;
-      }
+      let restOfDivision = sumValidate % 11;
+      restOfDivision = restOfDivision < 2 ? 0 : 11 - restOfDivision;
+      return restOfDivision;
     } catch (error) {
       return false;
     }
   }
   validateCpfDddSecondPart(cpf) {
     try {
-      let value = 11;
-      let aux = 0;
+      let sumValidate = 0;
       for (let i = 0; i < 10; i++) {
-        aux += cpf[i] * value;
-        value--;
+        sumValidate += parseInt(cpf[i]) * (11 - i);
       }
-      let restOfDivision = aux % 11;
-      let valueDdd = 0;
-      if (restOfDivision == 0 || restOfDivision == 1) {
-        return valueDdd;
-      } else if (restOfDivision >= 2 && restOfDivision <= 10) {
-        valueDdd = 11 - restOfDivision;
-        return valueDdd;
-      }
+      let restOfDivision = sumValidate % 11;
+      restOfDivision = restOfDivision < 2 ? 0 : 11 - restOfDivision;
+      return restOfDivision;
     } catch (error) {
       return false;
     }
@@ -81,10 +86,13 @@ class Patients {
       }
       let DddFirstPart = this.validateCpfDddFirstPart(cpf);
       let DddSecondPart = this.validateCpfDddSecondPart(cpf);
-
-      cpf[10] = DddFirstPart;
-      cpf[11] = DddSecondPart;
-
+      if (
+        !(
+          parseInt(cpf[9]) == DddFirstPart && parseInt(cpf[10]) == DddSecondPart
+        )
+      ) {
+        return false;
+      }
       return cpf;
     } catch (error) {
       return false;
@@ -113,20 +121,27 @@ class Patients {
 
   registerPatient(cpf, name, dateOfBirth) {
     try {
-      let i = vecUsers.indexOf((user) => user.getCpf() === cpf);
-      if (i !== -1) {
+      let i = false;
+      for (let j = 0; j < vecUsers.length; j++) {
+        if (vecUsers[j].getCpf() === cpf) {
+          i = true;
+        }
+      }
+      if (!i) {
         console.log("O CPF já está cadastrado!");
         return false;
       }
-      let verifyDate = this.validateDateOfBirth(dateOfBirth);
-      let verifyName = this.validateName(name);
-      let verifyCpf = this.validateCPF(cpf);
+      const verifyDate = this.validateDateOfBirth(dateOfBirth);
+      const verifyName = this.validateName(name);
+      const verifyCpf = this.validateCPF(cpf);
       if (verifyDate && verifyName && verifyCpf) {
         this.#cpf = verifyCpf;
         this.#name = verifyName;
         this.#dateOfBirth = verifyDate;
+        console.log("Cadastrado com sucesso!");
       } else {
         console.log("Os dados não são validos!");
+        return false;
       }
     } catch (error) {
       throw error;
@@ -134,15 +149,29 @@ class Patients {
   }
   excludePatient(cpf) {
     try {
-      let i = vecUsers.indexOf((users) => users.getCpf() === cpf);
-      if (i !== -1) {
-        let j = appointmentVector.indexOf(
-          (appointments) => appointments.getPatientCpf === cpf
-        );
-        if (j !== -1) {
+      let userIndex = -1;
+      for (let i = 0; i < vecUsers.length; i++) {
+        if (vecUsers[i].getCpf() === cpf) {
+          userIndex = i;
+          break;
+        }
+      }
+
+      if (userIndex !== -1) {
+        let appointmentIndex = -1;
+        for (let j = 0; j < appointmentVector.length; j++) {
+          if (appointmentVector[j].getPatientCpf() === cpf) {
+            appointmentIndex = j;
+            break;
+          }
+        }
+
+        if (appointmentIndex !== -1) {
           let currentDate = new Date();
-          let appointmentDate = appointmentVector[j].getAppointmentDate();
-          let hourAndMinute = appointmentVector[j].getAppointmentTime();
+          let appointmentDate =
+            appointmentVector[appointmentIndex].getAppointmentDate();
+          let hourAndMinute =
+            appointmentVector[appointmentIndex].getAppointmentTime();
           let hour = parseInt(hourAndMinute.substring(0, 2));
           let minute = parseInt(hourAndMinute.substring(2));
 
@@ -154,40 +183,23 @@ class Patients {
               currentDate.getHours() === hour &&
               currentDate.getMinutes() < minute)
           ) {
-            console.log(
-              "Um paciente com uma consulta agendada futura não pode ser excluído!"
-            );
+            console.log("Paciente está agendado!");
             return false;
           } else {
-            appointmentVector.splice(j, 1);
-            vecUsers.splice(i, 1);
+            appointmentVector.splice(appointmentIndex, 1);
           }
-        } else {
-          vecUsers.splice(i, 1);
         }
+
+        vecUsers.splice(userIndex, 1);
+        console.log("Paciente excluído com sucesso!");
+        return true;
+      } else {
+        console.log("Paciente não cadastrado!");
+        return false;
       }
     } catch (error) {
       throw error;
     }
-  }
-  get getCpf() {
-    return this.#cpf;
-  }
-  get getName() {
-    return this.#name;
-  }
-  get getDateOfBirth() {
-    return this.#dateOfBirth;
-  }
-
-  set setCpf(cpf) {
-    this.#cpf = cpf;
-  }
-  set setName(name) {
-    this.#name = name;
-  }
-  set setDateOfBirth(dateOfBirth) {
-    this.#dateOfBirth = dateOfBirth;
   }
 }
 

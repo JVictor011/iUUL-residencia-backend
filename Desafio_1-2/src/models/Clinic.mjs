@@ -120,13 +120,7 @@ class Clinic {
     appointmentTimeEndParam
   ) {
     try {
-      let i = vecUsers.indexOf(
-        (patient) => patient.getCpf() === patientCpfParam
-      );
-      if (i === -1) {
-        console.log("O CPF não está cadastrado!");
-        return false;
-      }
+
       if (
         !this.dateValidation(
           patientCpfParam,
@@ -137,14 +131,33 @@ class Clinic {
       ) {
         return false;
       }
+
       this.#patientCpf = patientCpfParam;
       this.#appointmentDate = appointmentDateParam;
       this.#appointmentTimeStart = appointmentTimeStartParam;
       this.#appointmentTimeEnd = appointmentTimeEndParam;
+
+      console.log("Agendamento realizado com sucesso!");
       return true;
     } catch (error) {
       return false;
     }
+  }
+
+  registeredPatient(patientCpfParam) {
+    let patientIndex = -1;
+    for (let i = 0; i < vecUsers.length; i++) {
+      if (vecUsers[i].getCpf() === patientCpfParam) {
+        patientIndex = i;
+        break;
+      }
+    }
+
+    if (patientIndex === -1) {
+      console.log("Paciente não cadastrado.");
+      return false;
+    }
+    return true;
   }
 
   cancelAppointment(
@@ -152,45 +165,102 @@ class Clinic {
     appointmentDateParam,
     appointmentTimeStartParam
   ) {
-    const patient = vecUsers.indexOf(
-      (patientExists) => patientExists.getCpf() === patientCpfParam
-    );
-    if (patient === -1) {
-      console.log("paciente não cadastrado");
-      return false;
-    }
     const currentDate = new Date();
     if (!(currentDate > appointmentDateParam)) {
       return false;
     }
+
     let hour = parseInt(appointmentTimeStartParam.substring(0, 2));
     let minute = parseInt(appointmentTimeStartParam.substring(2));
     if (
-      currentDate == appointmentDateParam &&
+      currentDate.getTime() === appointmentDateParam.getTime() &&
       (hour > currentDate.getHours() ||
-        (hour == currentDate.getHours() && minute >= currentDate.getMinutes()))
+        (hour === currentDate.getHours() && minute >= currentDate.getMinutes()))
     ) {
-      const i = appointmentVector.indexOf(
-        (appointment) => appointment.getPatientCpf() === patientCpfParam
-      );
-      if (i !== -1) {
-        appointmentVector.splice(i, 1);
+      let appointmentIndex = -1;
+      for (let i = 0; i < appointmentVector.length; i++) {
+        if (appointmentVector[i].getPatientCpf() === patientCpfParam) {
+          appointmentIndex = i;
+          break;
+        }
+      }
+
+      if (appointmentIndex !== -1) {
+        appointmentVector.splice(appointmentIndex, 1);
         console.log("Agendamento cancelado com sucesso!");
         return true;
       } else {
-        console.log("Agendamento não encontrado");
+        console.log("Agendamento não encontrado.");
         return false;
       }
     }
   }
 
   patientsList() {
-    //pass
+    try {
+      let patients = [];
+      vecUsers.forEach((user) => {
+        let appointmentDate = "";
+        let hInicialFormated = "";
+        let hFinalFormated = "";
+
+        for (let i = 0; i < appointmentVector.length; i++) {
+          if (appointmentVector[i].getPatientCpf() === user.getCpf()) {
+            appointmentDate = appointmentVector[i].getappointmentDate();
+            hInicialFormated =
+              appointmentVector[i].getappointmentTimeStart().substring(0, 2) +
+              ":" +
+              appointmentVector[i].getappointmentTimeStart().substring(2);
+            hFinalFormated =
+              appointmentVector[i].getappointmentTimeEnd().substring(0, 2) +
+              ":" +
+              appointmentVector[i].getappointmentTimeEnd().substring(2);
+            break;
+          }
+        }
+
+        const [day, month, year] = user.getDateOfBirth().split("/");
+        const date = new Date(year, month, day);
+        const currentDate = new Date();
+
+        let age = currentDate.getFullYear() - date.getFullYear();
+        const monthOfAge = currentDate.getMonth() - date.getMonth();
+        if (
+          monthOfAge < 0 ||
+          (monthOfAge === 0 && currentDate.getDate() < date.getDate())
+        ) {
+          age--;
+        }
+
+        let value = [
+          user.getCpf(),
+          user.getName(),
+          user.getDateOfBirth(),
+          age,
+          hInicialFormated,
+          hFinalFormated,
+          appointmentDate,
+        ];
+        patients.push(value);
+      });
+      Tools.patientsList(patients);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
   agendaList() {
     let correspondingSchedule = [];
     appointmentVector.forEach((appointment) => {
+      let userIndex = -1;
+      for (let i = 0; i < vecUsers.length; i++) {
+        if (vecUsers[i].getCpf() === appointment.getPatientCpf()) {
+          userIndex = i;
+          break;
+        }
+      }
+
       const hInicial = parseInt(
         appointment.getappointmentTimeStart().substring(0, 2)
       );
@@ -216,11 +286,8 @@ class Clinic {
         ":" +
         minute.toString().padStart(2, "0");
 
-      const user = vecUsers.indexOf(
-        (patient) => patient.getCpf() === appointment.getPatientCpf()
-      );
-      const name = vecUsers[user].getName();
-      const dateOfBirth = vecUsers[user].getDateOfBirth();
+      const name = vecUsers[userIndex].getName();
+      const dateOfBirth = vecUsers[userIndex].getDateOfBirth();
 
       const value = [
         appointment.getAppointmentDate(),
@@ -244,6 +311,14 @@ class Clinic {
 
     let correspondingSchedule = [];
     appointmentVector.forEach((appointment) => {
+      let userIndex = -1;
+      for (let i = 0; i < vecUsers.length; i++) {
+        if (vecUsers[i].getCpf() === appointment.getPatientCpf()) {
+          userIndex = i;
+          break;
+        }
+      }
+
       if (
         appointment.getappointmentTimeStart() >= startDate &&
         appointment.getappointmentTimeStart() <= endDate
@@ -275,11 +350,9 @@ class Clinic {
           ":" +
           minute.toString().padStart(2, "0");
 
-        const user = vecUsers.indexOf(
-          (patient) => patient.getCpf() === appointment.getPatientCpf()
-        );
-        const name = vecUsers[user].getName();
-        const dateOfBirth = vecUsers[user].getDateOfBirth();
+        const name = userIndex !== -1 ? vecUsers[userIndex].getName() : "";
+        const dateOfBirth =
+          userIndex !== -1 ? vecUsers[userIndex].getDateOfBirth() : "";
 
         const value = [
           appointment.getAppointmentDate(),
@@ -295,16 +368,16 @@ class Clinic {
     Tools.agendaList(correspondingSchedule);
   }
 
-  get getAppointmentDate() {
+  getAppointmentDate() {
     return this.#appointmentDate;
   }
-  get getappointmentTimeStart() {
+  getappointmentTimeStart() {
     return this.#appointmentTimeStart;
   }
-  get getappointmentTimeEnd() {
+  getappointmentTimeEnd() {
     return this.#appointmentTimeEnd;
   }
-  get getPatientCpf() {
+  getPatientCpf() {
     return this.#patientCpf;
   }
 
