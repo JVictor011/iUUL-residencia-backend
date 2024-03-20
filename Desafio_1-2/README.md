@@ -1,13 +1,15 @@
-# Documentação do Sistema de Clínica Médica
+# Documentação do Sistema de Administração da Agenda de um Consultório Odontológico
 
 ## Classes
 
 ### Classe Patients
 
 #### Descrição
+
 A classe `Patients` representa um conjunto de pacientes e fornece métodos para registrar e excluir pacientes, bem como validar informações como CPF e data de nascimento.
 
 #### Importações
+
 ```javascript
 import { rl, vecUsers, appointmentVector } from "../utils/readlineModule.mjs";
 ```
@@ -31,6 +33,7 @@ import { rl, vecUsers, appointmentVector } from "../utils/readlineModule.mjs";
 - `excludePatient(cpf)`: Exclui um paciente com o CPF fornecido, se não estiver agendado para consultas futuras.
 
 ## Exportações
+
 ```javascript
 export { Patients };
 ```
@@ -38,9 +41,11 @@ export { Patients };
 ## Classe Clinic
 
 ### Descrição
+
 A classe Clinic representa uma clínica médica e fornece métodos para fazer agendamentos, verificar e cancelar consultas, listar pacientes e listas de agendamentos.
 
 ### Importações
+
 ```javascript
 import { rl, vecUsers, appointmentVector } from "../utils/readlineModule.mjs";
 import { Tools } from "./Tools.mjs";
@@ -75,6 +80,7 @@ export { Clinic };
 ## Classe Tools
 
 ### Descrição
+
 A classe Tools fornece métodos para listar pacientes e agendamentos em um formato específico.
 
 ### Métodos
