@@ -17,12 +17,6 @@ import { rl, vecUsers, appointmentVector } from "../utils/readlineModule.mjs";
 ## Métodos
 
 - `constructor()`: Construtor da classe `Patients`.
-- `getCpf()`: Retorna o CPF do paciente.
-- `getName()`: Retorna o nome do paciente.
-- `getDateOfBirth()`: Retorna a data de nascimento do paciente.
-- `set setCpf(cpf)`: Define o CPF do paciente.
-- `set setName(name)`: Define o nome do paciente.
-- `set setDateOfBirth(dateOfBirth)`: Define a data de nascimento do paciente.
 - `validateName(name)`: Valida o nome do paciente, garantindo que tenha mais de 5 caracteres.
 - `validateCpfLanght(cpf)`: Valida o comprimento do CPF, garantindo que tenha 11 caracteres e que todos os números não sejam iguais.
 - `validateCpfDddFirstPart(cpf)`: Valida a primeira parte do CPF.
@@ -31,6 +25,13 @@ import { rl, vecUsers, appointmentVector } from "../utils/readlineModule.mjs";
 - `validateDateOfBirth(dateOfBirth)`: Valida a data de nascimento do paciente, garantindo que tenha pelo menos 13 anos.
 - `registerPatient(cpf, name, dateOfBirth)`: Registra um paciente com o CPF, nome e data de nascimento fornecidos.
 - `excludePatient(cpf)`: Exclui um paciente com o CPF fornecido, se não estiver agendado para consultas futuras.
+- Getters e Setters:
+  - `getCpf()`: Retorna o CPF do paciente.
+  - `getName()`: Retorna o nome do paciente.
+  - `getDateOfBirth()`: Retorna a data de nascimento do paciente.
+  - `set setCpf(cpf)`: Define o CPF do paciente.
+  - `set setName(name)`: Define o nome do paciente.
+  - `set setDateOfBirth(dateOfBirth)`: Define a data de nascimento do paciente.
 
 ## Exportações
 
