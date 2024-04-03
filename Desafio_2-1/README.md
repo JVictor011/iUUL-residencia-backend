@@ -1,13 +1,12 @@
 # Validador de Dados de Usuários
 
-Este projeto é um aplicativo JavaScript que valida dados de usuários fornecidos em um arquivo JSON de entrada. Ele foi desenvolvido para processar e validar informações básicas de usuários, como nome, CPF, data de nascimento, renda mensal e estado civil. Os dados válidos são registrados em um arquivo de saída, enquanto os erros de validação são registrados em um arquivo separado.
+Este projeto é um aplicativo JavaScript que valida dados de usuários fornecidos em um arquivo JSON de entrada. Ele foi desenvolvido para processar e validar informações básicas de usuários, como nome, CPF, data de nascimento, renda mensal e estado civil. Os erros de validação são registrados em um arquivo JSON.
 
 ## Funcionalidades
 
 -   Leitura de um arquivo JSON de entrada contendo dados de usuários.
 -   Validação dos dados conforme regras definidas.
--   Registro dos dados válidos em um arquivo de saída.
--   Registro de erros de validação em um arquivo separado.
+-   Registro de erros de validação em um arquivo JSON.
 -   Exibição de resultados na interface do usuário.
 
 ## Campos e regras
