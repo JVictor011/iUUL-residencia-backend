@@ -8,7 +8,7 @@ class MainController {
 	}
 
 	//Verifica se o json esta vazio ou se ele tem apenas '[]'
-	validateJdonMandatory(data) {
+	validateIfJsonEmpty(data) {
 		if (
 			data === null ||
 			data === undefined ||
@@ -21,7 +21,7 @@ class MainController {
 
 	//Faz as validações para cada usuario
 	async validateUserData(data) {
-		if (!validateJdonMandatory(data)) {
+		if (!validateIfJsonEmpty(data)) {
 			return {
 				status: OperationStatus.FAILURE,
 				fileName: 'FAILURE',
