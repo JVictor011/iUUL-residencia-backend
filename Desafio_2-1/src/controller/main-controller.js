@@ -7,8 +7,26 @@ class MainController {
 		this.model = new Users();
 	}
 
+	//Verifica se o json esta vazio ou se ele tem apenas '[]'
+	validateJdonMandatory(data) {
+		if (
+			data === null ||
+			data === undefined ||
+			JSON.stringify(data) === '[]'
+		) {
+			return false;
+		}
+		return true;
+	}
+
 	//Faz as validações para cada usuario
 	async validateUserData(data) {
+		if (!validateJdonMandatory(data)) {
+			return {
+				status: OperationStatus.FAILURE,
+				fileName: 'FAILURE',
+			};
+		}
 		let errors = [];
 		for (let i = 0; i < data.length; i++) {
 			const user = data[i];
