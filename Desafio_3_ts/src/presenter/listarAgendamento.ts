@@ -17,7 +17,6 @@ class ListarAgendamento {
 	}
 	async run() {
 		try {
-			const listagemAgendamento = new Listagem();
 			const cpf = await question('CPF: ');
 			const opcao = await question(
 				'Apresentar a agenda T-Toda ou P-Periodo: '
@@ -25,7 +24,7 @@ class ListarAgendamento {
 			if (opcao == 'P') {
 				const dataInicio = await question('Data Inicio: ');
 				const dataFim = await question('Data Fim: ');
-				const resultado = await listagemAgendamento.listarAgendamentos(
+				const resultado = await this.controller.run(
 					dataInicio,
 					dataFim
 				);
@@ -42,7 +41,7 @@ class ListarAgendamento {
 				for (const consulta of resultado) {
 					if (consulta.status === OperationStatus.SUCCESS) {
 						const resultadoPaciente =
-							await listagemAgendamento.buscaPaciente(
+							await this.controller.resultadoPaciente(
 								consulta.data.cpfPaciente
 							);
 						if (
@@ -59,8 +58,7 @@ class ListarAgendamento {
 					}
 				}
 			} else {
-				const resultado =
-					await listagemAgendamento.listarAgendamentos();
+				const resultado = await this.controller.run();
 				if (resultado.status === OperationStatus.FAILURE) {
 					if (
 						resultado.code ===
@@ -74,7 +72,7 @@ class ListarAgendamento {
 				for (const consulta of resultado) {
 					if (consulta.status === OperationStatus.SUCCESS) {
 						const resultadoPaciente =
-							await listagemAgendamento.buscaPaciente(
+							await this.controller.resultadoPaciente(
 								consulta.data.cpfPaciente
 							);
 						if (
