@@ -1,12 +1,14 @@
-import { MainController } from '../controller/mainController';
+import MainController from '../controller/mainController';
 import { exibirMenu } from '../view/exibirMenu';
 import { rl, question } from '../utils/readlineModule';
 import erros from '../view/erros';
+import MenuPaciente from './menuPaciente';
+import MenuClinica from './menuClinica';
 
 class MenuPresenter {
-	private controller: MainController;
+	private controller: any;
 
-	constructor(controller: MainController) {
+	constructor(controller: any) {
 		this.controller = controller;
 	}
 
@@ -15,12 +17,10 @@ class MenuPresenter {
 		const opcao = await question('Opção: ');
 		switch (opcao) {
 			case '1':
-				// exibirMenuPaciente();
-				// lerOpcaoPatient();
+				const menuPaciente = new MenuPaciente(this.controller);
 				break;
 			case '2':
-				// exibirMenuClinica();
-				// lerOpcaoClinic();
+				const menuClinica = new MenuClinica(this.controller);
 				break;
 			case '3':
 				erros.encerrarPrograma();
@@ -31,3 +31,5 @@ class MenuPresenter {
 		}
 	}
 }
+
+export default MenuPresenter;

@@ -1,4 +1,4 @@
-import { MainController } from '../controller/mainController';
+import MainController from '../controller/mainController';
 import { exibirMenu } from '../view/exibirMenu';
 import { rl, question } from '../utils/readlineModule';
 import erros from '../view/erros';
@@ -8,9 +8,9 @@ import { validarDataNascimento } from '../utils/validarDataNascimento';
 import { OperationErrors, OperationStatus } from '../controller/operation-code';
 
 class PacientePresenter {
-	private controller: MainController;
+	private controller: any;
 
-	constructor(controller: MainController) {
+	constructor(controller: any) {
 		this.controller = controller;
 	}
 
@@ -68,3 +68,5 @@ class PacientePresenter {
 		}
 	}
 }
+
+export default PacientePresenter;

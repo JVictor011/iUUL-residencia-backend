@@ -1,9 +1,9 @@
 import MainController from '../controller/mainController';
-import { exibirMenuPaciente } from '../view/exibirMenuPaciente';
+import { exibirmenuClinica } from '../view/exibirmenuClinica';
 import { rl, question } from '../utils/readlineModule';
 import erros from '../view/erros';
 
-class MenuPaciente {
+class MenuClinica {
 	private controller: any;
 
 	constructor(controller: any) {
@@ -11,17 +11,17 @@ class MenuPaciente {
 	}
 
 	async run() {
-		exibirMenuPaciente();
+		exibirmenuClinica();
 		const opcao = await question('Opção: ');
 		switch (opcao) {
 			case '1':
-				this.controller.incluirPaciente();
+				// registerPatient();
 				break;
 			case '2':
-				this.controller.excluirPaciente();
+				this.controller.cancelarConsulta();
 				break;
 			case '3':
-				this.controller.listarPacientes();
+				this.controller.listarAgenda();
 				break;
 			case '4':
 				erros.encerrarPrograma();
@@ -33,4 +33,4 @@ class MenuPaciente {
 	}
 }
 
-export default MenuPaciente;
+export default MenuClinica;
