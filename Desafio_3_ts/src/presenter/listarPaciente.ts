@@ -17,8 +17,7 @@ class ListarPaciente {
 	}
 	async run() {
 		try {
-			const listagem = new Listagem();
-			const pacientes = await listagem.listarPacientes();
+			const pacientes = await this.controller.run();
 			viewListarPaciente.viewPacientes();
 			for (const pacienteAtual of pacientes) {
 				viewListarPaciente.listarPacientes(
@@ -27,9 +26,10 @@ class ListarPaciente {
 					pacienteAtual.data.dataNascimento
 				);
 				const agendamento =
-					await listagem.listarAgendamentosdosDoPaciente(
+					await this.controller.listarAgendamentosdosDoPaciente(
 						pacienteAtual.data.cpf
 					);
+
 				if (agendamento) {
 					for (const listaAgendamento of agendamento) {
 						viewListarPaciente.listarAgendamentosPaciente(
