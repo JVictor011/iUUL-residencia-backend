@@ -16,15 +16,10 @@ class ExcluirAgendamento {
 	}
 	async run() {
 		try {
-			const agendamento = new Agendamento();
 			const cpf = await question('CPF: ');
 			const data = await question('Data: ');
 			const hora = await question('Hora inicial: ');
-			const resposta = await agendamento.cancelarAgendamento(
-				cpf,
-				data,
-				hora
-			);
+			const resposta = await this.controller.run(cpf, data, hora);
 			if (resposta?.status === OperationStatus.FAILURE) {
 				if (
 					resposta.code ===
