@@ -15,14 +15,13 @@ class ExcluirPacientePresenter {
 	}
 	async run() {
 		try {
-			const paciente = new Pacientes();
 			const cpf = await question('CPF: ');
 			const validaCpf = validarCpf(cpf);
 			if (!validaCpf) {
 				erros.valorInvalida();
 				this.run();
 			} else {
-				const resposta = await paciente.removerPaciente(cpf);
+				const resposta = await this.controller.run(cpf);
 				if (resposta.status === OperationStatus.FAILURE) {
 					if (resposta.code === OperationErrors.PACIENTE_NOT_FOUND) {
 						erros.pacienteNaoExiste();

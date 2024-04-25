@@ -16,19 +16,18 @@ class PacientePresenter {
 
 	async adicionarDataNascimento(cpf: string, nome: string) {
 		try {
-			const paciente = new Pacientes();
 			const data = await question('Data de Nascimento: ');
 			const validacaoDataNascimento = validarDataNascimento(data);
 			if (!validacaoDataNascimento) {
 				erros.valorInvalida();
 				this.adicionarDataNascimento(cpf, nome);
 			} else {
-				const resultado = await paciente.registrarPaciente(
+				const resultado = await this.controller.run(
 					cpf,
 					nome,
 					validacaoDataNascimento
 				);
-				if (resultado.status === OperationStatus.FAILURE) {
+				if (resultado === OperationStatus.FAILURE) {
 					erros.falha();
 				}
 			}

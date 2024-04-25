@@ -72,6 +72,9 @@ class OperationErrors {
 	static get FAILURE_TO_LIST_PATIENTS() {
         return 19;
     }
+	static get FAILURE() {
+        return 20;
+    }
 }
 
 export { OperationErrors, OperationStatus };
