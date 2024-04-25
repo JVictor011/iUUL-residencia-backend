@@ -18,10 +18,22 @@ class PacientePresenter {
 		try {
 			const agendamento = new Agendamento();
 			const cpf = await question('CPF: ');
-			const opcao = await question(
-				'Apresentar a agenda T-Toda ou P-Periodo: '
+			const data = await question('Data: ');
+			const hora = await question('Hora inicial: ');
+			const resposta = await agendamento.cancelarAgendamento(
+				cpf,
+				data,
+				hora
 			);
-			if (opcao == 'P') {
+			if (resposta?.status === OperationStatus.FAILURE) {
+				if (
+					resposta.code ===
+					OperationErrors.FAILURE_TO_REMOVE_SCHEDULED_APPOINTMENTS
+				) {
+					erros.falha();
+				} else {
+					erros.erro();
+				}
 			}
 		} catch (erro) {
 			erros.falha();
